@@ -11,6 +11,7 @@
     </style>
 </head>
 <body>
+    {{message}}
     <p>Name: {{guide.user.first_name}} {{guide.user.last_name}}</p>
     <p>Email: {{guide.user.email}}</p>
     <div>
@@ -26,6 +27,7 @@
         </ul>
     </div>
     <form action="{% url 'guide-detail' guide.id %}" method="POST">
+        {% csrf_token %}
         <input type="submit" value="Interested? We will contact him right away...">
     </form>
 </body>

@@ -235,6 +235,7 @@ def guide_detail(request, guide_id):
         return render(request, 'guide_detail.html', context)
     elif request.method == "POST":
         guide = CustomUser.objects.get(id=guide_id)
+        meUser = CustomUser.objects.get(user=request.user)
         to_email = guide.user.email
         email_subject = "Trivy - Someone has matched up with you..."
         current_site = get_current_site(request)
@@ -245,6 +246,14 @@ def guide_detail(request, guide_id):
         })
         email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
         email.send()
+        # url = '/guide-detail/'+str(guide_id)
+        # return redirect(url)
+        context  = {
+            'guide':guide,
+            'meUser':meUser,
+            'message':'Sent an email to the Guide'
+        }
+        return render(request, 'guide_detail.html', context)
 
 @login_required(login_url='/login/')
 def traveller_detail(request, traveller_id):

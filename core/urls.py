@@ -11,4 +11,5 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('travel-dashboard/', views.traveller_dashboard, name='travel-dashboard'),
     path('guide-detail/<int:guide_id>/', views.guide_detail, name='guide-detail'),
+    path('traveller-detail/<int:traveller_id>', views.traveller_detail, name='traveller-detail'),
 ]
