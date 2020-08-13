@@ -28,6 +28,7 @@
     </div>
     <form action="{% url 'guide-detail' guide.id %}" method="POST">
         {% csrf_token %}
+        <input type="date" name="date">
         <input type="submit" value="Interested? We will contact him right away...">
     </form>
 </body>

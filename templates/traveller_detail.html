@@ -24,6 +24,46 @@
                 {% endif %}
             {% endfor %}
         </ul>
+        Expected Date: {{h.expected_date}}
     </div>
+    {% if h.status == 1 %}
+    <form action="{% url 'guide-interested' traveller.id h.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Interested">
+    </form>
+    {% elif h.status == 2 %}
+    You have marked this user as interested. Haven't talked to them yet? Do it quick...
+    <form action="{% url 'guide-confirmed' traveller.id h.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Confirm">
+    </form>
+    {% elif h.status == 3 %}
+    <form action="{% url 'guide-started' traveller.id h.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Start Meeting">
+    </form>
+    {% elif h.status == 4 %}
+    <p> Waiting for the traveller to confirm.</p>
+    <p>Remember to refresh the page after he/she confirms</p>
+    {% elif h.status == 5 %}
+    <form action="{% url 'guide-ending' traveller.id h.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="End Meeting">
+    </form>
+    {% elif h.status == 6 %}
+    <p> Waiting for the traveller to confirms the end.</p>
+    <p>Remember to refresh the page after he/she confirms the end</p>
+    {% elif h.status == 7 %}
+    <form action="{% url 'guide-paid' traveller.id h.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Paid">
+    </form>
+    {% elif h.status == 9 %}
+    <p> We hope you had a great time</p>
+    {% endif %}
+    <form action="{% url 'guide-cancelled' traveller.id h.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Not Interested">
+    </form>
 </body>
 </html>

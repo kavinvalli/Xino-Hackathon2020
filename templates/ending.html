@@ -1,0 +1,9 @@
+{% autoescape off %} 
+Hi {{ traveller.user.first_name }} {{traveller.user.last_name}}, 
+{{meUser.user.first_name}} {{meUser.user.last_name}} has ended the meeting 
+
+Click on the link below to confirm the end
+http://{{ domain }}{% url 'endmeeting' uidb64=uid token=token traveller_id=traveller.id guide_id=meUser.id hiring_id=h.id %} 
+
+From, Trivy 
+{% endautoescape %}
