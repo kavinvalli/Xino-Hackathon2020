@@ -14,7 +14,63 @@
 </head>
 
 <body>
-    <section></section>
+    <form method="POST" action="{% url 'profile' %}">
+        {% csrf_token %}
+        {% if isGuide %}
+            <input type="radio" name="isGuide" id='guidebtn' checked previousValue="checked">
+        {% else %}
+            <input type="radio" name="isGuide" id='guidebtn'>
+        {% endif %}
+        <div id="output"></div>
+        <p>Are you a Guide</p>
+        {% if isGuide %}
+        <div id="afterGuide" style="display: block">
+            <select id="places" name="places" value={{place.id}}>
+                <option value="">Select a Place</option>
+                {% for p in places %}
+                {% if p == place %}
+                <option value="{{p.id}}" selected>{{p.name}}</option>
+                {% else %}
+                <option value="{{p.id}}">{{p.name}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <input type="number" placeholder="$xyz" name="price">
+        </div>
+        {% else %}
+        <div id="afterGuide" style="display: none">
+            <select id="places" name="places">
+                <option value="">Select a Place</option>
+                {% for p in places %}
+                <option value="{{p.id}}">{{p.name}}</option>
+                {% endfor %}
+            </select>
+            <input type="number" placeholder="$xyz" name="price">
+        </div>
+        {% endif %}
+        <select data-placeholder="Choose tags ..." name="interests" multiple class="chosen-select" value="{{chosen_interests}}" style="width: 100%">
+            <!-- <option value="Engineering">Engineering</option>
+            <option value="Carpentry">Carpentry</option>
+            <option value="Plumbing">Plumbing</option>
+            <option value="Electical">Electrical</option>
+            <option value="Mechanical">Mechanical</option>
+            <option value="HVAC">HVAC</option> -->
+            {% for i in interests %}
+            {% if chosen_interests %}
+                {% if i in chosen_interests %}
+                <option value="{{i.id}}" selected>{{i.name}}</option>
+                {% else %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endif %}
+            {% else %}
+                <option value="{{i.id}}">{{i.name}}</option>
+            {% endif %}
+            {% endfor %}
+            
+
+        </select>
+        <input type="submit">
+    </form>
 </body>
 <script>
     document.getElementById('output').innerHTML = location.search;
@@ -44,13 +100,13 @@
         if (previousValue == 'checked') {
             $(this).removeAttr('checked');
             $(this).attr('previousValue', false);
-            document.getElementById('places').style.display = "none"
-            document.getElementById('places').setAttribute('value',null)
-            console.log(document.getElementById('places').getAttribute('value'))
+            document.getElementById('afterGuide').style.display = "none"
+            document.getElementById('afterGuide').setAttribute('value',null)
+            console.log(document.getElementById('afterGuide').getAttribute('value'))
         } else {
             $("input[name="+name+"]:radio").attr('previousValue', false);
             $(this).attr('previousValue', 'checked');
-            document.getElementById('places').style.display = "block"
+            document.getElementById('afterGuide').style.display = "block"
         }
     });
     };

@@ -11,13 +11,12 @@
     </style>
 </head>
 <body>
-    {{message}}
-    <p>Name: {{guide.user.first_name}} {{guide.user.last_name}}</p>
-    <p>Email: {{guide.user.email}}</p>
+    <p>Name: {{traveller.user.first_name}} {{traveller.user.last_name}}</p>
+    <p>Email: {{traveller.user.email}}</p>
     <div>
         Interests: 
         <ul>
-            {% for interest in guide.interests.all %}
+            {% for interest in traveller.interests.all %}
                 {% if interest in meUser.interests.all %}
                 <li class="common">{{interest.name}}</li>
                 {% else %}
@@ -26,9 +25,5 @@
             {% endfor %}
         </ul>
     </div>
-    <form action="{% url 'guide-detail' guide.id %}" method="POST">
-        {% csrf_token %}
-        <input type="submit" value="Interested? We will contact him right away...">
-    </form>
 </body>
 </html>
