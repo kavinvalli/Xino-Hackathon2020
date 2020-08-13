@@ -4,6 +4,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+db.sqlite3
+
 # C extensions
 *.so
 
@@ -100,6 +102,16 @@ ENV/
 
 # mypy
 .mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# End of https://www.toptal.com/developers/gitignore/api/django
 
 .DS_Store
 *.sqlite3
@@ -113,4 +125,3 @@ media/
 !**/migrations/__init__.py
 
 .env
-db.sqlite3

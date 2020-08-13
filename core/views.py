@@ -37,7 +37,7 @@ def login_function(request):
                 login(request, user)
                 # url = "/dashboard/"
                 # return redirect(url)
-                return HttpResponse('Welcome All!')
+                return redirect('/profile/')
             elif user is not None and user.is_active==False:
                 return render(request, "login.html", {"message": "Please Activate your Account."})
             else:
@@ -93,7 +93,7 @@ def register_function(request):
                         from_email = 'info@foop.com'
                         email = EmailMessage(email_subject, message, "Trivy Email Verification <info@foop.com>", to=[to_email])
                         email.send()
-                        return HttpResponse('<h1>You would have recieved an email from us. Please authenticate your email id</h1>')
+                        return render(request, 'goodm.html')
     return render(request, "register.html", {'message':None})
 
 def logout_view(request):
@@ -109,9 +109,9 @@ def activate_account(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Your account has been made successfully <br> <a href="/login">Login</a>')
+        return render(request, 'continue.html')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('<h2 style="color:red; text-align:center">Activation link is invalid!</h3>')
 
 @login_required(login_url='/login/')
 def profile(request):
