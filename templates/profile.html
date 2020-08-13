@@ -48,15 +48,13 @@
             <option value="HVAC">HVAC</option> -->
             {% for i in interests %}
             {% if chosen_interests %}
-            {% for c in chosen_interests %}
-                    {% if i == c %}
-                       <option value="{{i.id}}" selected>{{i.name}}</option>
-                    {% else %}
-                        <option value="{{i.id}}">{{i.name}}</option>
-                    {% endif %}
-                {% endfor %}
+                {% if i in chosen_interests %}
+                <option value="{{i.id}}" selected>{{i.name}}</option>
+                {% else %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endif %}
             {% else %}
-            <option value="{{i.id}}">{{i.name}}</option>
+                <option value="{{i.id}}">{{i.name}}</option>
             {% endif %}
             {% endfor %}
         </select>

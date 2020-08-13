@@ -219,3 +219,13 @@ def traveller_dashboard(request):
             'guides':guidesToSend
         }
         return render(request, 'traveller_dashboard.html', context)
+
+@login_required(login_url='/login/')
+def guide_detail(request, guide_id):
+    guide = CustomUser.objects.get(id=guide_id)
+    meUser = CustomUser.objects.get(user=request.user)
+    context  = {
+        'guide':guide,
+        'meUser':meUser
+    }
+    return render(request, 'guide_detail.html', context)
