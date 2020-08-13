@@ -13,9 +13,32 @@
 <body>
     <form method="POST" action="{% url 'profile' %}">
         {% csrf_token %}
-        <input type="radio" name="isGuide">
-        <p>Are you a Guide</p>
+        {% if isGuide %}
+            <input type="radio" name="isGuide" id='guidebtn' checked previousValue="checked">
+        {% else %}
+            <input type="radio" name="isGuide" id='guidebtn'>
+        {% endif %}
         <div id="output"></div>
+        <p>Are you a Guide</p>
+        {% if isGuide %}
+            <select id="places" name="places" style="display: block" value={{place.id}}>
+                <option value="">Select a Place</option>
+                {% for p in places %}
+                {% if p == place %}
+                <option value="{{p.id}}" selected>{{p.name}}</option>
+                {% else %}
+                <option value="{{p.id}}">{{p.name}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        {% else %}
+            <select id="places" name="places" style="display: none">
+                <option value="">Select a Place</option>
+                {% for p in places %}
+                <option value="{{p.id}}">{{p.name}}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
         <select data-placeholder="Choose tags ..." name="interests" multiple class="chosen-select" value="{{chosen_interests}}" style="width: 100%">
             <!-- <option value="Engineering">Engineering</option>
             <option value="Carpentry">Carpentry</option>
@@ -24,7 +47,7 @@
             <option value="Mechanical">Mechanical</option>
             <option value="HVAC">HVAC</option> -->
             {% for i in interests %}
-            {% if c %}
+            {% if chosen_interests %}
             {% for c in chosen_interests %}
                     {% if i == c %}
                        <option value="{{i.id}}" selected>{{i.name}}</option>
@@ -43,5 +66,42 @@
 <script>
     document.getElementById('output').innerHTML = location.search;
     $(".chosen-select").chosen();
+    // console.log(radioBtn.checked)
+    // if (radioBtn.checked===true) {
+    //     radioBtn.addEventListener('click', () => {
+    //         document.getElementById('places').style.display = "none"
+    //         radioBtn.checked = false;
+    //     })
+    // }
+    // radioBtn.addEventListener('click', () => {
+    //     console.log("Hello")
+    //     if (radioBtn.checked===true) {
+    //         console.log("Hello 2")
+    //         document.getElementById('places').style.display = "block"
+    //     } else {
+    //         document.getElementById('places').style.display = "none"
+    //         radioBtn.checked = false;
+    //     }
+    // })
+    var grd = function(){
+    $("input[type='radio']").click(function() {
+        var previousValue = $(this).attr('previousValue');
+        var name = $(this).attr('name');
+
+        if (previousValue == 'checked') {
+            $(this).removeAttr('checked');
+            $(this).attr('previousValue', false);
+            document.getElementById('places').style.display = "none"
+            document.getElementById('places').setAttribute('value',null)
+            console.log(document.getElementById('places').getAttribute('value'))
+        } else {
+            $("input[name="+name+"]:radio").attr('previousValue', false);
+            $(this).attr('previousValue', 'checked');
+            document.getElementById('places').style.display = "block"
+        }
+    });
+    };
+
+    grd('1');
 </script>
 </html>
