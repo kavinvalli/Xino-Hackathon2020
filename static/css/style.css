@@ -137,7 +137,11 @@ body {
   padding-bottom: 15px;
   top: 50%
 }
-
+.sr h2 {
+  font-size: 1.8rem;
+  padding-bottom: 15px;
+  top: 50%
+}
 .sr p {
   color: #ffffff;
   font-size: 2.8rem;
@@ -193,4 +197,59 @@ body {
   color: white;
   font-size: 1.3rem;
   font-weight: 600;
+}
+
+h1 {
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+
+/* Reset Select */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #2c3e50;
+  background-image: none;
+}
+/* Remove IE arrow */
+select::-ms-expand {
+  display: none;
+}
+/* Custom Select */
+.select {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 3em;
+  line-height: 3;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: .25em;
+}
+select {
+  flex: 1;
+  padding: 0 .5em;
+  color: #fff;
+  cursor: pointer;
+}
+/* Arrow */
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #ffcc70;
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
 }

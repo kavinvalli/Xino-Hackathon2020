@@ -18,15 +18,17 @@
 
 
     <div class="sr">
-        <h1>Welcome, {{user.first_name}} {{user.last_name}}</h1> 
-        <p>
+            <p style="margin-bottom:25px">
     {% if isGuide %}
     <a class="button is-rounded gd" href="/guide-dashboard">Your Guide Dashboard</a>
     {% endif %}
         </p>
+        <h1>Welcome, {{user.first_name}} {{user.last_name}}</h1> 
+        <h2>Which city do you want to explore ?</h2>
     <form method="POST" action="{% url 'travel-dashboard' %}">
         {% csrf_token %}
-        <select name="place" id="place">
+        <div class="select">
+            <select name="place" id="place">
             {% for p in places %}
             {% if p == place %}
                 <option value="{{p.id}}" selected>{{p.name}}</option>
@@ -34,18 +36,17 @@
                 <option value="{{p.id}}">{{p.name}}</option>
                 {% endif %}
             {% endfor %}
-        </select>
+            </select>
+        </div>
         <input type="submit">
     </form>
+        </div>
 
     <!-- {% if guides %} -->
     <!-- {{guides}} -->
 
-    <div class="container">
-        <center>
-        <h2>People like you...</h2>
-    </center>
-
+    <div class="">
+        <h1>TESTING</h1>
     </div>
 
     {% for guide in guides %}
@@ -56,7 +57,6 @@
     </div>
     {% endfor %}
     <!-- {% endif %} -->
-        </div>
 
 
 </body>
