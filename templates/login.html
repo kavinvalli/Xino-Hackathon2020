@@ -1,17 +1,43 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {{ message }}
-    <form action="{% url 'login' %}" method="POST">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trivy</title>
+        <link rel="shortcut icon" href="{% static 'images/logo.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/logreg.css' %}" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  </head>
+  <body>
+  <div class="container">
+    <div class='background'></div>
+    <div class="Form-Login">
+        {% if message %}<p>{{ message }}</p>{% endif %}
+        <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}
-        <input type="email" name="email" placeholder="Email" />
-        <input type="password" name="password" placeholder="*********" />
-        <input type="submit">
-    </form>
+        <h1>Login to Trivy</h1>
+        <div class='email'>
+          <input type="email" name="email" />
+          <label>Email</label>
+        </div>
+        <div class='password'>
+        <input type="password" name="password"/>
+          <label>Password</label>
+          <span>
+            <i class="far fa-eye"></i>
+          </span>
+        </div>
+        <div>
+          <button class='Button-Login'>Login</button>
+        </div>
+        <a href="{% url 'registration' %}">Don't have an account? Sign-Up.</a>
+      </form>
+    </div>
+  </div>
+
+ </body>
+</html>
+
 </body>
 </html>

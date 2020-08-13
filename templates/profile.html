@@ -16,7 +16,7 @@
         <input type="radio" name="isGuide">
         <p>Are you a Guide</p>
         <div id="output"></div>
-        <select data-placeholder="Choose tags ..." name="interests" multiple class="chosen-select" value="{{chosen_interests}}" style="width: 100%">
+        <select data-placeholder="Choose tags ..." name="interests" multiple class="chosen-select" value="{{chosen_interests}}" style="width: 75%">
             <!-- <option value="Engineering">Engineering</option>
             <option value="Carpentry">Carpentry</option>
             <option value="Plumbing">Plumbing</option>
@@ -24,18 +24,18 @@
             <option value="Mechanical">Mechanical</option>
             <option value="HVAC">HVAC</option> -->
             {% for i in interests %}
-            {% if c %}
-            {% for c in chosen_interests %}
-                    {% if i == c %}
-                       <option value="{{i.id}}" selected>{{i.name}}</option>
-                    {% else %}
-                        <option value="{{i.id}}">{{i.name}}</option>
-                    {% endif %}
-                {% endfor %}
+            {% if chosen_interests %}
+                {% if i in chosen_interests %}
+                <option value="{{i.id}}" selected>{{i.name}}</option>
+                {% else %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endif %}
             {% else %}
-            <option value="{{i.id}}">{{i.name}}</option>
+                <option value="{{i.id}}">{{i.name}}</option>
             {% endif %}
             {% endfor %}
+            
+
         </select>
         <input type="submit">
     </form>
