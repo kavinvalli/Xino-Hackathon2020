@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 class Places(models.Model):
     name = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
-    general_price = models.FloatField(null=True)
-    currency = models.CharField(max_length=10)
 
     def __str__(self):
         return self.name
@@ -22,6 +20,7 @@ class CustomUser(models.Model):
     place_of_stay = models.ForeignKey(Places, on_delete=models.CASCADE, related_name="guide_play_of_stay", null=True)
     searching_for = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
     interestCount = models.IntegerField(default=0)
+    general_price = models.FloatField(null=True)
     places_of_interest = models.ManyToManyField(Places, related_name='user_places_of_interest')
     interests = models.ManyToManyField(InterestsActivities, related_name='InterestsActivities')
 

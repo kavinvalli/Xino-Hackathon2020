@@ -21,7 +21,8 @@
         <div id="output"></div>
         <p>Are you a Guide</p>
         {% if isGuide %}
-            <select id="places" name="places" style="display: block" value={{place.id}}>
+        <div id="afterGuide" style="display: block">
+            <select id="places" name="places" value={{place.id}}>
                 <option value="">Select a Place</option>
                 {% for p in places %}
                 {% if p == place %}
@@ -31,13 +32,18 @@
                 {% endif %}
                 {% endfor %}
             </select>
+            <input type="number" placeholder="$xyz" name="price">
+        </div>
         {% else %}
-            <select id="places" name="places" style="display: none">
+        <div id="afterGuide" style="display: none">
+            <select id="places" name="places">
                 <option value="">Select a Place</option>
                 {% for p in places %}
                 <option value="{{p.id}}">{{p.name}}</option>
                 {% endfor %}
             </select>
+            <input type="number" placeholder="$xyz" name="price">
+        </div>
         {% endif %}
         <select data-placeholder="Choose tags ..." name="interests" multiple class="chosen-select" value="{{chosen_interests}}" style="width: 100%">
             <!-- <option value="Engineering">Engineering</option>
@@ -89,13 +95,13 @@
         if (previousValue == 'checked') {
             $(this).removeAttr('checked');
             $(this).attr('previousValue', false);
-            document.getElementById('places').style.display = "none"
-            document.getElementById('places').setAttribute('value',null)
-            console.log(document.getElementById('places').getAttribute('value'))
+            document.getElementById('afterGuide').style.display = "none"
+            document.getElementById('afterGuide').setAttribute('value',null)
+            console.log(document.getElementById('afterGuide').getAttribute('value'))
         } else {
             $("input[name="+name+"]:radio").attr('previousValue', false);
             $(this).attr('previousValue', 'checked');
-            document.getElementById('places').style.display = "block"
+            document.getElementById('afterGuide').style.display = "block"
         }
     });
     };

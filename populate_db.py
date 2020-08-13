@@ -50,7 +50,7 @@ def main():
         "Bollywood Movies"
     ]
 
-    def add_place(name, country, general_price, currency):
+    def add_place(name, country):
         p = Places.objects.create(
             name=name,
             country=country,
@@ -68,7 +68,7 @@ def main():
     if not Places.objects.filter(name='New Delhi').exists():
         for i in places:
             print(str(i))
-            add_place(i['name'], i['country'], i['general_price'], i['currency'])
+            add_place(i['name'], i['country'])
     else:
         print("Places have already been created")
 

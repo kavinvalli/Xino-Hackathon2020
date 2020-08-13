@@ -134,6 +134,7 @@ def profile(request):
         place_id = request.POST.get('places')
         print(place_id)
         isGuideRadio = request.POST.get('isGuide')
+        price = request.POST.get('price')
         if isGuideRadio == "on":
             isGuideValue = True
         elif isGuideRadio == None:
@@ -148,9 +149,11 @@ def profile(request):
         if isGuideValue:
             place = Places.objects.get(id=place_id)
             customUser.place_of_stay=place
+            customUser.general_price=price
             customUser.save()
         else:
             customUser.place_of_stay=None
+            customUser.general_price=None
             customUser.save()
         interestObjects = []
         for i in interests:
@@ -222,10 +225,34 @@ def traveller_dashboard(request):
 
 @login_required(login_url='/login/')
 def guide_detail(request, guide_id):
-    guide = CustomUser.objects.get(id=guide_id)
-    meUser = CustomUser.objects.get(user=request.user)
-    context  = {
-        'guide':guide,
-        'meUser':meUser
-    }
-    return render(request, 'guide_detail.html', context)
+    if request.method == "GET":
+        guide = CustomUser.objects.get(id=guide_id)
+        meUser = CustomUser.objects.get(user=request.user)
+        context  = {
+            'guide':guide,
+            'meUser':meUser
+        }
+        return render(request, 'guide_detail.html', context)
+    elif request.method == "POST":
+        guide = CustomUser.objects.get(id=guide_id)
+        to_email = guide.user.email
+        email_subject = "Trivy - Someone has matched up with you..."
+        current_site = get_current_site(request)
+        message = render_to_string('recruited.html', {
+            'guide': guide,
+            'meUser': CustomUser.objects.get(user=request.user),
+            'domain': current_site.domain
+        })
+        email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
+        email.send()
+
+@login_required(login_url='/login/')
+def traveller_detail(request, traveller_id):
+    if request.method == "GET":
+        traveller = CustomUser.objects.get(id=traveller_id)
+        meUser = CustomUser.objects.get(user=request.user)
+        context  = {
+            'traveller':traveller,
+            'meUser':meUser
+        }
+        return render(request, 'traveller_detail.html', context)
