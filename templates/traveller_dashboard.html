@@ -1,15 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="shortcut icon" href="{% static 'images/logo.png' %}" type="image/x-icon">
+    <title>Dashboard | Trivy</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 <body>
-    {{user.first_name}} {{user.last_name}}
+    {% include 'nav.html' %}
+    <div class="dash">
+
+    </div>
+
+
+    <div class="sr">
+        <h1>Welcome, {{user.first_name}} {{user.last_name}}</h1> 
+        <p>
     {% if isGuide %}
-    <a href="/guide-dashboard">Guide Dashboard</a>
+    <a class="button is-rounded gd" href="/guide-dashboard">Your Guide Dashboard</a>
     {% endif %}
+        </p>
     <form method="POST" action="{% url 'travel-dashboard' %}">
         {% csrf_token %}
         <select name="place" id="place">
@@ -23,8 +37,17 @@
         </select>
         <input type="submit">
     </form>
+
     <!-- {% if guides %} -->
     <!-- {{guides}} -->
+
+    <div class="container">
+        <center>
+        <h2>People like you...</h2>
+    </center>
+
+    </div>
+
     {% for guide in guides %}
     <div>
         Name: {{guide.user.first_name}} {{guide.user.last_name}} <br>
@@ -33,5 +56,8 @@
     </div>
     {% endfor %}
     <!-- {% endif %} -->
+        </div>
+
+
 </body>
 </html>
