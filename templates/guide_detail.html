@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        li.common {
+            color: #f66666
+        }
+    </style>
+</head>
+<body>
+    <p>Name: {{guide.user.first_name}} {{guide.user.last_name}}</p>
+    <p>Email: {{guide.user.email}}</p>
+    <div>
+        Interests: 
+        <ul>
+            {% for interest in guide.interests.all %}
+                {% if interest in meUser.interests.all %}
+                <li class="common">{{interest.name}}</li>
+                {% else %}
+                <li class="different">{{interest.name}}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

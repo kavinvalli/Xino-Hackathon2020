@@ -117,29 +117,115 @@ def activate_account(request, uidb64, token):
 def profile(request):
     if request.method=="GET":
         interests = InterestsActivities.objects.all()
-        print(interests)
         customUser = CustomUser.objects.get(user=request.user)
         chosen_interests = customUser.interests.all()
-        print(chosen_interests)
+        places = Places.objects.all()
+        isGuide = customUser.isGuide
+        place = customUser.place_of_stay
         context = {
             'interests':interests,
-            'chosen_interests':chosen_interests
+            'chosen_interests':chosen_interests,
+            'places':places,
+            'isGuide':isGuide,
+            'place':place
         }
         return render(request,  'profile.html', context)
     elif request.method=="POST":
+        place_id = request.POST.get('places')
+        print(place_id)
         isGuideRadio = request.POST.get('isGuide')
-        print(type(isGuideRadio))
         if isGuideRadio == "on":
-            isGuide = True
+            isGuideValue = True
         elif isGuideRadio == None:
-            isGuide = False
+            isGuideValue = False
+        print(isGuideRadio)
+        print(isGuideValue)
         interests = request.POST.getlist('interests')
+        print(interests)
         customUser = CustomUser.objects.get(user=request.user)
+        customUser.isGuide = isGuideValue
+        customUser.save()
+        if isGuideValue:
+            place = Places.objects.get(id=place_id)
+            customUser.place_of_stay=place
+            customUser.save()
+        else:
+            customUser.place_of_stay=None
+            customUser.save()
         interestObjects = []
         for i in interests:
             interestObject = InterestsActivities.objects.get(id=i)
+            print(interestObject.name)
             interestObjects.append(interestObject)
-        customUser.interests.set(interestObjects)
-        print(customUser.interests)
+            print(interestObjects)
+        customUser.interests.clear()
+        for i in interestObjects:
+            print(i)
+            customUser.interests.add(i)
+            print(customUser.interests.all())
+            print(f"added {i}")
+        # customUser.interests.set(interestObjects)
+        print(customUser.interests.all())
         url = '/profile/'
         return redirect(url)
+
+@login_required(login_url='/login/')
+def traveller_dashboard(request):
+    pass
+    if request.method == "GET":
+        for guide in CustomUser.objects.filter(isGuide=True):
+            guide.searching_for = None
+            guide.interestCount = 0
+            guide.save()
+        customUser = CustomUser.objects.get(user=request.user)
+        interests = customUser.interests
+        print(interests)
+        isGuide = customUser.isGuide
+        print(isGuide)
+        places = Places.objects.all()
+        context = {
+            'isGuide':isGuide,
+            'places':places
+        }
+        return render(request,  'traveller_dashboard.html', context)
+    elif request.method=="POST":
+        customUser = CustomUser.objects.get(user=request.user)
+        place_id = request.POST.get('place')
+        place_selected = Places.objects.get(id=place_id)
+        guides = []
+        for guide in CustomUser.objects.filter(place_of_stay=place_selected, isGuide=True):
+            print(guide)
+            guide.searching_for = customUser
+            for i in customUser.interests.all():
+                print("i is ",i)
+                if guide.interests.filter(name=i.name).exists():
+                    guide.interestCount += 1
+                    guide.save()
+            print(guide.interestCount)
+        guidesToSend = CustomUser.objects.filter(place_of_stay=place_selected, isGuide=True, searching_for=customUser).order_by('-interestCount')
+        print(guidesToSend)
+        print("Guide is",guidesToSend)
+        customUser = CustomUser.objects.get(user=request.user)
+        interests = customUser.interests.all()
+        print(interests)
+        isGuide = customUser.isGuide
+        print(isGuide)
+        places = Places.objects.all()
+        print(guidesToSend)
+        context = {
+            'isGuide':isGuide,
+            'places':places,
+            'place':place_selected,
+            'guides':guidesToSend
+        }
+        return render(request, 'traveller_dashboard.html', context)
+
+@login_required(login_url='/login/')
+def guide_detail(request, guide_id):
+    guide = CustomUser.objects.get(id=guide_id)
+    meUser = CustomUser.objects.get(user=request.user)
+    context  = {
+        'guide':guide,
+        'meUser':meUser
+    }
+    return render(request, 'guide_detail.html', context)

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{user.first_name}} {{user.last_name}}
+    {% if isGuide %}
+    <a href="/guide-dashboard">Guide Dashboard</a>
+    {% endif %}
+    <form method="POST" action="{% url 'travel-dashboard' %}">
+        {% csrf_token %}
+        <select name="place" id="place">
+            {% for p in places %}
+            {% if p == place %}
+                <option value="{{p.id}}" selected>{{p.name}}</option>
+                {% else %}
+                <option value="{{p.id}}">{{p.name}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+    <!-- {% if guides %} -->
+    <!-- {{guides}} -->
+    {% for guide in guides %}
+    <div>
+        Name: {{guide.user.first_name}} {{guide.user.last_name}} <br>
+        Email: {{guide.user.email}}
+        <a type="button" href="{% url 'guide-detail' guide.id %}">Choose</a>
+    </div>
+    {% endfor %}
+    <!-- {% endif %} -->
+</body>
+</html>
