@@ -24,6 +24,9 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+import datetime
+from django.utils import timezone
+
 
 class Homepage(TemplateView):
     template_name = 'home.html'
@@ -234,14 +237,23 @@ def guide_detail(request, guide_id):
         }
         return render(request, 'guide_detail.html', context)
     elif request.method == "POST":
+        expected_date = request.POST.get('date')
         guide = CustomUser.objects.get(id=guide_id)
         meUser = CustomUser.objects.get(user=request.user)
+        h = Hiring.objects.create(
+            traveller=meUser,
+            guide=guide,
+            place=guide.place_of_stay,
+            status=1,
+            expected_date=expected_date
+        )
         to_email = guide.user.email
         email_subject = "Trivy - Someone has matched up with you..."
         current_site = get_current_site(request)
         message = render_to_string('recruited.html', {
             'guide': guide,
             'meUser': CustomUser.objects.get(user=request.user),
+            'h':h,
             'domain': current_site.domain
         })
         email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
@@ -256,12 +268,235 @@ def guide_detail(request, guide_id):
         return render(request, 'guide_detail.html', context)
 
 @login_required(login_url='/login/')
-def traveller_detail(request, traveller_id):
+def traveller_detail(request, traveller_id, hiring_id):
     if request.method == "GET":
         traveller = CustomUser.objects.get(id=traveller_id)
         meUser = CustomUser.objects.get(user=request.user)
+        h = Hiring.objects.get(id=hiring_id)
         context  = {
             'traveller':traveller,
-            'meUser':meUser
+            'meUser':meUser,
+            'h':h
         }
         return render(request, 'traveller_detail.html', context)
+
+@login_required(login_url='/login/')
+def guide_interested(request, traveller_id, hiring_id):
+    if request.method == 'POST':
+        traveller = CustomUser.objects.get(id=traveller_id)
+        meUser = CustomUser.objects.get(user=request.user)
+        h = Hiring.objects.get(id=hiring_id)
+        h.status=2
+        h.save()
+        to_email = traveller.user.email
+        email_subject = "Trivy - " + meUser.user.first_name + ' ' + meUser.user.last_name + ' is interested'
+        current_site = get_current_site(request)
+        message = render_to_string('interested.html', {
+            'traveller': traveller,
+            'meUser': meUser,
+            'domain': current_site.domain
+        })
+        email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
+        email.send()
+        # url = '/guide-detail/'+str(guide_id)
+        # return redirect(url)
+        # context  = {
+        #     'guide':guide,
+        #     'meUser':meUser,
+        #     'message':'Sent an email to the Guide'
+        # }
+        url = '/traveller-detail/'+str(traveller_id)+'/'+str(h.id)
+        return redirect(url)
+
+@login_required(login_url='/login/')
+def guide_cancelled(request, traveller_id, hiring_id):
+    if request.method == 'POST':
+        traveller = CustomUser.objects.get(id=traveller_id)
+        meUser = CustomUser.objects.get(user=request.user)
+        h = Hiring.objects.get(id=hiring_id)
+        h.status=8
+        h.save()
+        to_email = traveller.user.email
+        email_subject = "Trivy - " + meUser.user.first_name + ' ' + meUser.user.last_name + ' has cancelled'
+        current_site = get_current_site(request)
+        message = render_to_string('cancelled.html', {
+            'traveller': traveller,
+            'meUser': meUser,
+            'domain': current_site.domain
+        })
+        email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
+        email.send()
+        # url = '/guide-detail/'+str(guide_id)
+        # return redirect(url)
+        # context  = {
+        #     'guide':guide,
+        #     'meUser':meUser,
+        #     'message':'Sent an email to the Guide'
+        # }
+        url = '/traveller-detail/'+str(traveller_id)+'/'+str(h.id)
+        return redirect(url)
+
+@login_required(login_url='/login/')
+def guide_confirmed(request, traveller_id, hiring_id):
+    if request.method == 'POST':
+        traveller = CustomUser.objects.get(id=traveller_id)
+        meUser = CustomUser.objects.get(user=request.user)
+        h = Hiring.objects.get(id=hiring_id)
+        h.status=3
+        h.save()
+        to_email = traveller.user.email
+        email_subject = "Trivy - " + meUser.user.first_name + ' ' + meUser.user.last_name + ' has confirmed'
+        current_site = get_current_site(request)
+        message = render_to_string('confirmed.html', {
+            'traveller': traveller,
+            'meUser': meUser,
+            'domain': current_site.domain
+        })
+        email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
+        email.send()
+        # url = '/guide-detail/'+str(guide_id)
+        # return redirect(url)
+        # context  = {
+        #     'guide':guide,
+        #     'meUser':meUser,
+        #     'message':'Sent an email to the Guide'
+        # }
+        url = '/traveller-detail/'+str(traveller_id)+'/'+str(h.id)
+        return redirect(url)
+
+@login_required(login_url='/login/')
+def guide_started(request, traveller_id, hiring_id):
+    if request.method == 'POST':
+        traveller = CustomUser.objects.get(id=traveller_id)
+        meUser = CustomUser.objects.get(user=request.user)
+        h = Hiring.objects.get(id=hiring_id)
+        h.status=4
+        h.save()
+        to_email = traveller.user.email
+        email_subject = "Trivy - " + meUser.user.first_name + ' ' + meUser.user.last_name + ' has started'
+        current_site = get_current_site(request)
+        message = render_to_string('started.html', {
+            'traveller': traveller,
+            'meUser': meUser,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(meUser.pk)).encode().decode(),
+            'token': account_activation_token.make_token(meUser.user),
+            'h':h
+        })
+        email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
+        email.send()
+        # url = '/guide-detail/'+str(guide_id)
+        # return redirect(url)
+        # context  = {
+        #     'guide':guide,
+        #     'meUser':meUser,
+        #     'message':'Sent an email to the Guide'
+        # }
+        url = '/traveller-detail/'+str(traveller_id)+'/'+str(h.id)
+        return redirect(url)
+
+
+def start_meeting_link(request, uidb64, token, traveller_id, guide_id, hiring_id):
+    try:
+        uid = force_bytes(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        # user.is_active = True
+        # user.save()
+        # return render(request, 'continue.html')
+        h = Hiring.objects.get(id=hiring_id)
+        h.status=5
+        h.start_time = timezone.now()
+        h.save()
+        return HttpResponse('<h2 style="color:#f66666; text-align:center">The meeting has started!</h3>')
+    else:
+        return HttpResponse('<h2 style="color:red; text-align:center">Activation link is invalid!</h3>')
+
+@login_required(login_url='/login/')
+def guide_ending(request, traveller_id, hiring_id):
+    if request.method == 'POST':
+        traveller = CustomUser.objects.get(id=traveller_id)
+        meUser = CustomUser.objects.get(user=request.user)
+        h = Hiring.objects.get(id=hiring_id)
+        h.status=6
+        h.save()
+        to_email = traveller.user.email
+        email_subject = "Trivy - " + meUser.user.first_name + ' ' + meUser.user.last_name + ' has ended'
+        current_site = get_current_site(request)
+        message = render_to_string('ending.html', {
+            'traveller': traveller,
+            'meUser': meUser,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(meUser.pk)).encode().decode(),
+            'token': account_activation_token.make_token(meUser.user),
+            'h':h
+        })
+        email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
+        email.send()
+        # url = '/guide-detail/'+str(guide_id)
+        # return redirect(url)
+        # context  = {
+        #     'guide':guide,
+        #     'meUser':meUser,
+        #     'message':'Sent an email to the Guide'
+        # }
+        url = '/traveller-detail/'+str(traveller_id)+'/'+str(h.id)
+        return redirect(url)
+
+def end_meeting_link(request, uidb64, token, traveller_id, guide_id, hiring_id):
+    try:
+        uid = force_bytes(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        # user.is_active = True
+        # user.save()
+        # return render(request, 'continue.html')
+        guide = CustomUser.objects.get(id=guide_id)
+        h = Hiring.objects.get(id=hiring_id)
+        h.status=5
+        h.end_time = timezone.now()
+        timedelta = h.end_time - h.start_time
+        seconds = timedelta.days * 24 * 3600 + timedelta.seconds
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+        days, hours = divmod(hours, 24)
+        print(hours)
+
+        h.total_hours = hours
+        h.pay = guide.general_price * hours
+        h.save()
+        return HttpResponse('<h2 style="color:#f66666; text-align:center">The meeting has ended! You need to pay $'+str(h.pay)+' </h3>')
+    else:
+        return HttpResponse('<h2 style="color:red; text-align:center">Activation link is invalid!</h3>')
+
+@login_required(login_url='/login/')
+def guide_paid(request, traveller_id, hiring_id):
+    if request.method == 'POST':
+        traveller = CustomUser.objects.get(id=traveller_id)
+        meUser = CustomUser.objects.get(user=request.user)
+        h = Hiring.objects.get(id=hiring_id)
+        h.status=9
+        h.save()
+        to_email = traveller.user.email
+        email_subject = "Trivy - We've got confirmation that you have paid"
+        current_site = get_current_site(request)
+        message = render_to_string('paid.html', {
+            'traveller': traveller,
+            'meUser': meUser,
+            'domain': current_site.domain
+        })
+        email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
+        email.send()
+        # url = '/guide-detail/'+str(guide_id)
+        # return redirect(url)
+        # context  = {
+        #     'guide':guide,
+        #     'meUser':meUser,
+        #     'message':'Sent an email to the Guide'
+        # }
+        url = '/traveller-detail/'+str(traveller_id)+'/'+str(h.id)
+        return redirect(url)

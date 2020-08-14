@@ -24,8 +24,30 @@ class CustomUser(models.Model):
     places_of_interest = models.ManyToManyField(Places, related_name='user_places_of_interest')
     interests = models.ManyToManyField(InterestsActivities, related_name='InterestsActivities')
 
+PENDING = 1
+INTERESTED = 2
+CONFIRMED = 3
+STARTED_BY_GUIDE = 4
+STARTED = 5
+ENDED_BY_GUIDE = 6
+ENDED = 7
+CANCELLED = 8
+PAYMENT = 9
+HIRING_STATUS = (
+    (PENDING, "Pending Reply"),
+    (CONFIRMED, "Confirmed"),
+    (STARTED, "Started"),
+    (ENDED, "Ended"),
+    (CANCELLED, "Cancelled"),
+    (PAYMENT, "Paid")
+)
 class Hiring(models.Model):
     traveller = models.ForeignKey(CustomUser, related_name='hiring_traveller', on_delete=models.SET_NULL, null=True)
     guide = models.ForeignKey(CustomUser, related_name='hiring_guide', on_delete=models.SET_NULL, null=True)
     place = models.ForeignKey(Places, related_name='hiring_place', on_delete=models.SET_NULL, null=True)
     pay = models.FloatField(null=True)
+    status = models.IntegerField(choices=HIRING_STATUS, default=1)
+    expected_date = models.DateField(null=True)
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
+    total_hours = models.IntegerField(null=True)

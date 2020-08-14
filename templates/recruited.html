@@ -1,7 +1,7 @@
 Hi {{ guide.first_name }} {{guide.last_name}},
 Someone has matched up with you and wants to meet you.
 
-Here's his profile at http://{{domain}}{% url 'traveller-detail' meUser.id %}
+Here's his profile at http://{{domain}}{% url 'traveller-detail' meUser.id h.id %}
 
 Here's the email: {{meUser.user.email}}
 Ping up with this awesome person... Quick
