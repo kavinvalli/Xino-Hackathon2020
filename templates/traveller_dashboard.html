@@ -99,8 +99,13 @@
                     <p style="font-size:1rem"> <b>Hourly Rate: $ </b> {{guide.general_price}}</p><br>      
                     <a class="button is-danger is-small" href="{% url 'guide-detail' guide.id %}">View Profile</a>
                 </div>
-            </div>     
-             {% endfor %}
+            </div>    
+
+            {% empty %}
+                    <h1 style="text-align:center; margin-top:-100px">No Guides Available</h1>
+
+            {% endfor %}
+
         </div>
     </div>
 

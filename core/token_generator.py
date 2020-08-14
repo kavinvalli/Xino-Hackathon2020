@@ -7,4 +7,4 @@ class TokenGenerator(PasswordResetTokenGenerator):
         return (
             six.text_type(user.pk) + six.text_type(timestamp) + six.text_type(user.is_active)
         )
-account_activation_token = TokenGenerator()
+account_activation_token = TokenGenerator() 
