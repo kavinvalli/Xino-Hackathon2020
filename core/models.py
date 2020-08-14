@@ -34,9 +34,12 @@ ENDED = 7
 CANCELLED = 8
 PAYMENT = 9
 HIRING_STATUS = (
-    (PENDING, "Pending Reply"),
-    (CONFIRMED, "Confirmed"),
-    (STARTED, "Started"),
+    (PENDING, "Your confirmation is Pending"),
+    (INTERESTED, "You've said you are Interested"),
+    (CONFIRMED, "You've Confirmed the Meeting"),
+    (STARTED_BY_GUIDE, "Started by you"),
+    (STARTED, "The meeting is going on"),
+    (ENDED_BY_GUIDE,  "Ended by you"),
     (ENDED, "Ended"),
     (CANCELLED, "Cancelled"),
     (PAYMENT, "Paid")

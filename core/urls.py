@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile, name='profile'),
     path('travel-dashboard/', views.traveller_dashboard, name='travel-dashboard'),
+    path('guide-dashboard/', views.guide_dashboard, name='guide-dashboard'),
     path('guide-detail/<int:guide_id>/', views.guide_detail, name='guide-detail'),
     path('traveller-detail/<int:traveller_id>/<int:hiring_id>', views.traveller_detail, name='traveller-detail'),
     path('traveller-detail/<int:traveller_id>/<int:hiring_id>/yes', views.guide_interested, name='guide-interested'),
@@ -20,5 +21,4 @@ urlpatterns = [
     path("activate/<uidb64>/<token>/<int:traveller_id>/<int:guide_id>/<int:hiring_id>", views.start_meeting_link, name="startmeeting"),
     path("end-activate/<uidb64>/<token>/<int:traveller_id>/<int:guide_id>/<int:hiring_id>", views.end_meeting_link, name="endmeeting"),
     path('traveller-detail/<int:traveller_id>/<int:hiring_id>/paid', views.guide_paid, name='guide-paid'),
-    # def start_meeting_link(request, uidb64, token, traveller_id, guide_id)
 ]
