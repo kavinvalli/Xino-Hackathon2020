@@ -25,7 +25,7 @@
           font-size: 40px;
           margin-bottom: 10px;
         }
-        p {
+        label, p {
           color: #404F5E;
           font-size:20px;
           margin: 0;
@@ -65,6 +65,12 @@
      box-shadow: 0 0 1px 1px #2ecc71;
  }
 
+input[type="submit"] {
+    background-color: #f66666;
+    color: #fff;
+}
+
+
     </style>
 </head>
 
@@ -82,12 +88,17 @@
     <form method="POST" action="{% url 'profile' %}">
         {% csrf_token %}
         {% if isGuide %}
-            <input type="radio" name="isGuide" id='guidebtn' checked previousValue="checked">
+        <span>
+            <input type="radio" name="isGuide" id='guidebtn' checked previousValue="checked" style="display: inline">
+            <label style="display: inline">Can you be a guide ?</label>
+        </span>
         {% else %}
-            <input type="radio" name="isGuide" id='guidebtn'>
+        <span>
+            <input type="radio" name="isGuide" id='guidebtn' style="display: inline">
+            <label style="display: inline">Can you be a guide ?</label>
+        </span>
         {% endif %}
         <div id="output"></div>
-        <p>Can you be a guide ?</p>
         {% if isGuide %}
         <div id="afterGuide" style="display: block">
             <select id="places" name="places" value={{place.id}}>
@@ -134,11 +145,12 @@
             
 
         </select>
+        <br><br>
         <input type="submit">
     </form>
 
 
-<a class="button" href="{% url 'travel-dashboard' %}" style="margin-top: 20px">Your Dashboard</a>
+<a class="button" href="{% url 'travel-dashboard' %}" style="margin-top: 20px; color: #f66666;">Your Dashboard</a>
 
     </div>
 </body>
@@ -170,13 +182,15 @@
         if (previousValue == 'checked') {
             $(this).removeAttr('checked');
             $(this).attr('previousValue', false);
-            document.getElementById('afterGuide').style.display = "none"
+            // document.getElementById('afterGuide').style.display = "none"
+            $('#afterGuide').slideUp('slow')
             document.getElementById('afterGuide').setAttribute('value',null)
             console.log(document.getElementById('afterGuide').getAttribute('value'))
         } else {
             $("input[name="+name+"]:radio").attr('previousValue', false);
             $(this).attr('previousValue', 'checked');
-            document.getElementById('afterGuide').style.display = "block"
+            // document.getElementById('afterGuide').style.display = "block"
+            $('#afterGuide').slideDown('slow')
         }
     });
     };
