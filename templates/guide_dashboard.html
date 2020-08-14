@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        div {
+            background-color: #f666;
+        }
+    </style>
+</head>
+<body>
+    {% for h in hirings %}
+    <a href="{% url 'traveller-detail' h.traveller.id h.id  %}">
+        <div>
+            <p>{{h.get_status_display}}</p>
+            <p> With {{h.traveller.user.first_name}} {{h.traveller.user.last_name}}</p>
+        </div>
+    </a>
+    {% endfor %}
+</body>
+</html>

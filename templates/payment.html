@@ -1,0 +1,15 @@
+{% autoescape off %} 
+Hi {{ guide.user.first_name }} {{guide.user.last_name}}, 
+{{meUser.user.first_name}} {{meUser.user.last_name}} has ended the meeting 
+
+They have to pay you $ {{pay}}
+
+Click on the link below and click on Paid after they have paid you
+
+http://{{domain}}{% url 'traveller-detail' meUser.id h.id %}
+
+We hope you had a great time with them...
+
+
+From, Trivy 
+{% endautoescape %}

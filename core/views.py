@@ -13,6 +13,7 @@ from django.shortcuts import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth.decorators import user_passes_test
 from django.core import serializers
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
@@ -27,6 +28,9 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from django.utils import timezone
 
+def guide(user):
+    customUser = CustomUser.objects.get(user=request.user)
+    return customUser.isGuide == True
 
 class Homepage(TemplateView):
     template_name = 'home.html'
@@ -51,7 +55,7 @@ def login_function(request):
         else:
             # url = "/messenger/"
             # return redirect(url)
-            return HttpResponse('Welcome All!')
+            return redirect('/profile/')
 
 def register_function(request):
     if request.method == "POST":
@@ -130,7 +134,8 @@ def profile(request):
             'chosen_interests':chosen_interests,
             'places':places,
             'isGuide':isGuide,
-            'place':place
+            'place':place,
+            'customUser':customUser
         }
         return render(request,  'profile.html', context)
     elif request.method=="POST":
@@ -172,7 +177,7 @@ def profile(request):
             print(f"added {i}")
         # customUser.interests.set(interestObjects)
         print(customUser.interests.all())
-        url = '/profile/'
+        url = '/travel-dashboard/'
         return redirect(url)
 
 @login_required(login_url='/login/')
@@ -225,6 +230,19 @@ def traveller_dashboard(request):
             'guides':guidesToSend
         }
         return render(request, 'traveller_dashboard.html', context)
+
+@login_required(login_url='/login/')
+def guide_dashboard(request):
+    customUser = CustomUser.objects.get(user=request.user)
+    if request.method == "GET":
+        if not customUser.isGuide:
+            return HttpResponse('<h2 style="color:red">You need to be a guide to be able to access this page</h2>')
+        else:
+            hirings = Hiring.objects.filter(guide=customUser).order_by('status')
+            context = {
+                'hirings':hirings
+            }
+            return render(request, "guide_dashboard.html", context)
 
 @login_required(login_url='/login/')
 def guide_detail(request, guide_id):
@@ -455,9 +473,10 @@ def end_meeting_link(request, uidb64, token, traveller_id, guide_id, hiring_id):
         # user.is_active = True
         # user.save()
         # return render(request, 'continue.html')
+        meUser = CustomUser.objects.get(user=request.user)
         guide = CustomUser.objects.get(id=guide_id)
         h = Hiring.objects.get(id=hiring_id)
-        h.status=5
+        h.status=7
         h.end_time = timezone.now()
         timedelta = h.end_time - h.start_time
         seconds = timedelta.days * 24 * 3600 + timedelta.seconds
@@ -465,10 +484,23 @@ def end_meeting_link(request, uidb64, token, traveller_id, guide_id, hiring_id):
         hours, minutes = divmod(minutes, 60)
         days, hours = divmod(hours, 24)
         print(hours)
-
         h.total_hours = hours
         h.pay = guide.general_price * hours
         h.save()
+        to_email = guide.user.email
+        email_subject = "Trivy - " + meUser.user.first_name + ' ' + meUser.user.last_name + ' has ended. Payment...'
+        current_site = get_current_site(request)
+        message = render_to_string('payment.html', {
+            'guide': guide,
+            'meUser': meUser,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(meUser.pk)).encode().decode(),
+            'token': account_activation_token.make_token(meUser.user),
+            'h':h,
+            'pay':h.pay
+        })
+        email = EmailMessage(email_subject, message, "Trivy <info@foop.com>", to=[to_email])
+        email.send()
         return HttpResponse('<h2 style="color:#f66666; text-align:center">The meeting has ended! You need to pay $'+str(h.pay)+' </h3>')
     else:
         return HttpResponse('<h2 style="color:red; text-align:center">Activation link is invalid!</h3>')
