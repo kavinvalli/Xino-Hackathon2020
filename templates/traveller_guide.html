@@ -1,23 +1,84 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <style>
-        div {
-            background-color: #f666;
-        }
-    </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traveller Trips</title>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+        <link rel="shortcut icon" href="{% static 'images/logo.png' %}" type="image/x-icon">
 </head>
-<body>
-    {% for h in hirings %}
-    <!-- <a href="{% url 'traveller-detail' h.traveller.id h.id  %}"> -->
-        <div>
-            <p>{{h.get_status_display}}</p>
+      <style>
+      html {
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+background-color: #f9c1b1;
+background-image: linear-gradient(315deg, #f9c1b1 0%, #fb8085 74%);
+
+        text-align: center;
+        padding: 40px 0;
+        font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif;
+      }
+        h1 {
+          font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif;
+          font-weight: 900;
+          font-size: 40px;
+          margin-bottom: 10px;
+          margin-top: -20px
+        }
+        p {
+          color: #404F5E;
+          font-size:20px;
+          margin: 0;
+        }
+      i {
+        color: #9ABC66;
+        font-size: 100px;
+        line-height: 200px;
+        margin-left:-15px;
+      }
+      .card {
+        background: white;
+        padding: 60px;
+        border-radius: 4px;
+        box-shadow: 0 2px 3px #C8D0D8;
+        display: inline-block;
+        margin: 0 auto;
+      }
+    </style>
+    </head>
+    <body>
+      <div class="card">
+        {% if hirings %}
+              <h1>Your Meetings</h1>
+            <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto; ">
+        <img src="{% static 'images/b.svg' %}" height="200px" width="200px" style="padding-top:10px">
+      </div>
+        {% endif %}
+            {% for h in hirings %}
+    <a href="{% url 'traveller-detail' h.traveller.id h.id  %}">
+            <p><b>{{h.get_status_display}}</b></p><br>
             <p> With {{h.guide.user.first_name}} {{h.guide.user.last_name}}</p>
-        </div>
-    <!-- </a> -->
+    </a>
+    {% empty %}
+        <h1>No Scheduled Guides Yet</h1> 
+
+      <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto; ">
+        <img src="{% static 'images/n.svg' %}" height="200px" width="200px" style="padding-top:10px">
+      </div>
+        <p>
+        You haven't booked a Guide till now.<br><br>
+        For now, You can go back to your Traveller  <br>Dashboard by clicking <a style="text-decoration: none" href="{% url 'travel-dashboard' %}">here.</a>
+        </p>
+
+
     {% endfor %}
-</body>
+      </div>
+    </body>
 </html>
+
+
