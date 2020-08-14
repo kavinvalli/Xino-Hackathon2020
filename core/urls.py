@@ -12,6 +12,7 @@ urlpatterns = [
     path('travel-dashboard/', views.traveller_dashboard, name='travel-dashboard'),
     path('guide-dashboard/', views.guide_dashboard, name='guide-dashboard'),
     path('guide-detail/<int:guide_id>/', views.guide_detail, name='guide-detail'),
+    path('traveller-guide/', views.traveller_guide, name='traveller-guide'),
     path('traveller-detail/<int:traveller_id>/<int:hiring_id>', views.traveller_detail, name='traveller-detail'),
     path('traveller-detail/<int:traveller_id>/<int:hiring_id>/yes', views.guide_interested, name='guide-interested'),
     path('traveller-detail/<int:traveller_id>/<int:hiring_id>/no', views.guide_cancelled, name='guide-cancelled'),

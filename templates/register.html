@@ -31,9 +31,9 @@
           <label>Email</label>
         </div>
         <div class='password'>
-        <input type="password" name="password"/>
+        <input type="password" name="password" id="password"/>
           <label>Password</label>
-          <span>
+          <span id="show-password">
             <i class="far fa-eye"></i>
           </span>
         </div>
@@ -46,6 +46,18 @@
   </div>
 
  </body>
+ <script>
+  showP = document.getElementById('show-password')
+  showP.onclick = () => {
+   password = document.getElementById('password')
+    if (password.type === "password"){
+       password.setAttribute('type','text')
+    } else {
+       password = document.getElementById('password')
+       password.setAttribute('type','password')
+    }
+  }
+</script>
 </html>
 
 </body>

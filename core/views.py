@@ -182,7 +182,6 @@ def profile(request):
 
 @login_required(login_url='/login/')
 def traveller_dashboard(request):
-    pass
     if request.method == "GET":
         for guide in CustomUser.objects.filter(isGuide=True):
             guide.searching_for = None
@@ -230,6 +229,15 @@ def traveller_dashboard(request):
             'guides':guidesToSend
         }
         return render(request, 'traveller_dashboard.html', context)
+
+@login_required(login_url='/login/')
+def traveller_guide(request):
+    customUser = CustomUser.objects.get(user=request.user)
+    hirings = Hiring.objects.filter(traveller=customUser).order_by('status')
+    context = {
+        'hirings':hirings
+    }
+    return render(request, "traveller_guide.html", context)
 
 @login_required(login_url='/login/')
 def guide_dashboard(request):
