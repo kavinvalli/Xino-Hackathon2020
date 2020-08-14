@@ -10,8 +10,7 @@
         </div>
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item" href="{% url 'home' %}">Home</a>
-                <a class="navbar-item" href="">Jobs</a>
+                <a class="navbar-item" href="{% url 'home' %}">Trivy</a>
             </div>
 
             <div class="navbar-end">
@@ -23,6 +22,7 @@
                     <a class="button is-info is-rounded" href="{% url 'registration' %}"><strong>Join Us</strong></a>
                     {% comment %} <a class="button is-small is-warning is-rounded">(Admin) Dash</a> {% endcomment %}
                     {% else %}
+                    <a class="button is-info is-rounded" href="{% url 'profile' %}"><strong>Profile</strong></a>
                     <a class="button is-warning is-rounded" href="{% url 'logout' %}">Log Out</a>
                     {% endif %}
                     </div>

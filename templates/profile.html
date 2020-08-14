@@ -1,16 +1,83 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'images/logo.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://harvesthq.github.io/chosen/chosen.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://harvesthq.github.io/chosen/chosen.jquery.js"></script>
-    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Complete Trivy Profile</title>
+    <style>
+      body {
+        text-align: center;
+        padding: 40px 0;
+        background: #EBF0F5;
+        font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif;
+      }
+        h1 {
+          font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif;
+          font-weight: 900;
+          font-size: 40px;
+          margin-bottom: 10px;
+        }
+        p {
+          color: #404F5E;
+          font-size:20px;
+          margin: 0;
+        }
+      i {
+        color: #9ABC66;
+        font-size: 100px;
+        line-height: 200px;
+        margin-left:-15px;
+      }
+      .card {
+        background: white;
+        padding: 60px;
+        border-radius: 4px;
+        box-shadow: 0 2px 3px #C8D0D8;
+        display: inline-block;
+        margin: 0 auto;
+      }
+      label {
+    width: 100%;
+}
+
+.card-input-element {
+    display: none;
+}
+
+.card-input {
+    margin: 10px;
+    padding: 00px;
+}
+
+.card-input:hover {
+    cursor: pointer;
+}
+
+.card-input-element:checked + .card-input {
+     box-shadow: 0 0 1px 1px #2ecc71;
+ }
+
+    </style>
 </head>
 
 <body>
+    <div class="card">
+      <div style="height:100px; width:100px; background: #F8FAF5; margin:0 auto;">
+        <img src="{% static 'images/logo.png' %}" height="100px" width="100px">
+      </div>
+        <h1>Your Trivy Profile</h1> 
+        <p>Our AI-powered recommendation algorithm finds a guide  </p> 
+        <p>with whom your personality matches from all listed volunteers.</p>
+
+    <hr style="margin-bottom: 30px">
+ 
     <form method="POST" action="{% url 'profile' %}">
         {% csrf_token %}
         {% if isGuide %}
@@ -19,7 +86,7 @@
             <input type="radio" name="isGuide" id='guidebtn'>
         {% endif %}
         <div id="output"></div>
-        <p>Are you a Guide</p>
+        <p>Can you be a guide ?</p>
         {% if isGuide %}
         <div id="afterGuide" style="display: block">
             <select id="places" name="places" value={{place.id}}>
@@ -68,6 +135,11 @@
         </select>
         <input type="submit">
     </form>
+
+
+<a class="button" href="{% url 'travel-dashboard' %}" style="margin-top: 20px">Your Dashboard</a>
+
+    </div>
 </body>
 <script>
     document.getElementById('output').innerHTML = location.search;
