@@ -67,6 +67,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
                         <p><b>Click the button below and Trivy will do it's job</b></p>
                         <form action="{% url 'guide-detail' guide.id %}" method="POST">
                             {% csrf_token %}
+                            <input type="date" name="date" />
                             <b>
                             <input type="submit" value="We will contact them right away...">
                             </b>
