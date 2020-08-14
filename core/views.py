@@ -130,7 +130,8 @@ def profile(request):
             'chosen_interests':chosen_interests,
             'places':places,
             'isGuide':isGuide,
-            'place':place
+            'place':place,
+            'customUser':customUser
         }
         return render(request,  'profile.html', context)
     elif request.method=="POST":
