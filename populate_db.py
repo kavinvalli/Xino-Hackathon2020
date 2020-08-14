@@ -54,10 +54,8 @@ def main():
         p = Places.objects.create(
             name=name,
             country=country,
-            general_price=general_price,
-            currency=currency
         )
-        print(f"Successfuly created {p} with {p.country} and {p.general_price}")
+        print(f"Successfuly created {p} with {p.country}")
 
     def add_interests(name):
         i = InterestsActivities.objects.create(
