@@ -57,9 +57,13 @@
             <p style="margin-bottom:25px">
     {% if isGuide %}
     <a class="button is-rounded gd" href="/guide-dashboard">Your Guide Dashboard</a>
-    {% endif %}
+    {% else %}
+        <a class="button is-rounded gd" href="/traveller-guide">Your Trivy Trips</a>
+            {% endif %}
+
         </p>
         <h1>Welcome, {{user.first_name}} {{user.last_name}}</h1> 
+        <p><i>Tip: You can change your guide status anytime by clicking on Profile.</i></p>
         <h2>Which city do you want to explore ?</h2>
     <form method="POST" action="{% url 'travel-dashboard' %}">
         {% csrf_token %}

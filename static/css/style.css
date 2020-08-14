@@ -134,7 +134,7 @@ body {
 }
 .sr h1 {
   font-size: 3rem;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   top: 50%
 }
 .sr h2 {
@@ -144,11 +144,12 @@ body {
 }
 .sr p {
   color: #ffffff;
-  font-size: 2.8rem;
+  font-size: 1.2rem !important;
   max-width: 70%;
   font-size: 1.5rem;
-  line-height: 28px;
-  letter-spacing: 1.75px;
+  line-height: 20px;
+  letter-spacing: 1.25px;
+  padding-bottom: 30px;
 }
 
 
