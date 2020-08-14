@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
     {% include 'nav.html' %}
@@ -33,6 +34,87 @@
             alt=""
         />
     </div>
+        <section class="section pt-6" id="about">
+        <div class="container">
+            <div class="columns is-centered is-mobile">
+                <div class="column has-text-centered">
+                    <h2 class="title is-3 has-text-black mt-2">What is Trivy ?</h2>
+                    <p class="subtitle has-text-dull is-5 mt-1">
+<b>
+                        Trivy is a platform to connect people socially to other people with shared interests as they wander in an unknown land.
+
+</b>
+
+<p class="subtitle has-text-dull is-5 mt-1">
+
+Traditional Tour Guides are very mechanical. They are skilled, no doubt, but the travelers don’t get a personalized and fun experience with them. <b>ENTER TRIVY.</b>
+The solution is a web and mobile marketplace for the travellers to   be able to discover other people with shared interests and reach out to them. </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<div class="section hero is-light" style="color: black; margin-top: 20px; border-bottom: 1px solid lightgrey;" id="perks">
+    <div class="container">
+        <div class="columns is-centered is-mobile">
+            <div class="column has-text-centered">
+                <h2 class="title is-3 has-text-black mt-2">Features</h2>
+                <p class="subtitle has-text-dull is-5 mb-5">
+                    Trivy is a one-stop smart destination for anyone looking to find the perfect companion and/or a guide.
+                </p>
+            </div>
+        </div>
+        <div class="item columns">
+            <div class="column is-3" style="border: 0px solid red;">
+                <figure style="margin:auto; display:block;" class="image is-48x48">
+                    <img src="{% static 'images/eye.svg' %}" alt="">
+                </figure>
+                <p class="item-title" style="text-align: center; margin-top: 10px;">
+                    <span style="font-weight: bold;">AI Powered</span>
+                </p>
+                <p style="text-align: center; margin-top: 10px;">
+                    Trivy's innovative <b>Collaborative Filtering Model</b> ensures you have the best possible interest match.
+                </p>
+            </div>
+            <div class="column is-3" style="border: 0px solid red;">
+                <figure style="margin:auto; display:block;" class="image is-48x48">
+                    <img src="{% static 'images/smile.svg' %}" alt="">
+                </figure>
+                <p class="item-title" style="text-align: center; margin-top: 10px;">
+                    <span style="font-weight: bold;">Sleek Experience</span>
+                </p>
+                <p style="text-align: center; margin-top: 10px;">
+                    Our User-Friendy platform is designed to give you <b>peace of mind while travelling.
+                </p></b>
+            </div>
+            <div class="column is-3" style="border: 0px solid red;">
+                <figure style="margin:auto; display:block;" class="image is-48x48">
+                    <img src="{% static 'images/shield.svg' %}" alt="">
+                </figure>
+                <p class="item-title" style="text-align: center; margin-top: 10px;">
+                    <span style="font-weight: bold;">Secure Payments</span>
+                </p>
+                <p style="text-align: center; margin-top: 10px;">
+                    Every <b>payment</b> to your guide <b>is secured</b> by 256-bit encryption and powered by <i>Stripe</i>
+                </p>
+            </div>
+            <div class="column is-3" style="border: 0px solid red;">
+                <figure style="margin:auto; display:block;" class="image is-48x48">
+                    <img src="{% static 'images/user-check.svg' %}" alt="">
+                </figure>
+                <p class="item-title" style="text-align: center; margin-top: 10px;">
+                    <span style="font-weight: bold;">Your Privacy</span>
+                </p>
+                <p style="text-align: center; margin-top: 10px;">
+                    You only communicate to the guide via our  <b>custom, secure chat platform</b> and details are only revealed  at confirmation.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
     <script>
         // The following code is based off a toggle menu by @Bradcomp
         // source: https://gist.github.com/Bradcomp/a9ef2ef322a8e8017443b626208999c1
@@ -43,7 +125,10 @@
                 burger.classList.toggle('is-active');
                 menu.classList.toggle('is-active');
             });
+
         })();
+                    $(document).ready(function(){
+   feather.replace();})
     </script>
 </body>
 </html> 

@@ -73,7 +73,7 @@ body {
   position: absolute;
   opacity: 0;
   top: 350px;
-  right:30px;
+  right: 30px;
   background: #fff;
   padding: 8px 38px;
   border-radius: 24px;
@@ -135,12 +135,12 @@ body {
 .sr h1 {
   font-size: 3rem;
   padding-bottom: 10px;
-  top: 50%
+  top: 50%;
 }
 .sr h2 {
   font-size: 1.8rem;
   padding-bottom: 15px;
-  top: 50%
+  top: 50%;
 }
 .sr p {
   color: #ffffff;
@@ -151,8 +151,6 @@ body {
   letter-spacing: 1.25px;
   padding-bottom: 30px;
 }
-
-
 
 @keyframes up {
   0% {
@@ -206,7 +204,6 @@ h1 {
   margin-bottom: 10px;
 }
 
-
 /* Reset Select */
 select {
   -webkit-appearance: none;
@@ -232,11 +229,67 @@ select::-ms-expand {
   line-height: 3;
   background: #2c3e50;
   overflow: hidden;
-  border-radius: .25em;
+  border-radius: 0.25em;
 }
 select {
   flex: 1;
-  padding: 0 .5em;
+  padding: 0 0.5em;
   color: #fff;
   cursor: pointer;
+}
+.land {
+  padding-top: 9rem !important;
+  padding-bottom: 9rem !important;
+}
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+.row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+.med {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px; 
+  -ms-flex: 0 0 58.33333%;
+  flex: 0 0 58.33333%;
+max-width: 58.33333%; 
+margin-right: auto !important; 
+margin-left: auto !important; 
+}
+ten {
+  -ms-flex: 0 0 83.33333%;
+  flex: 0 0 83.33333%;
+max-width: 83.33333%; 
 }
